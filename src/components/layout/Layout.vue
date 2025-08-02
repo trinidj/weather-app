@@ -2,12 +2,14 @@
 </script>
 
 <template>
-  <header>
-    <h1>Weather App</h1>
-  </header>
-  <main>
-    <slot />
-  </main>
+  <body>
+    <header>
+      <h1>Weather App</h1>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
 </template>
 
 <style scoped>
