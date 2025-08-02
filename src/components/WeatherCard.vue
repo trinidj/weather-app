@@ -2,12 +2,24 @@
   import MetricCard from '@/components/ui/MetricCard.vue';
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
   import { ref } from 'vue';
+  import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
 
   const metrics = ref({
     humidity: 'Humidity',
     wind: 'Wind',
     visibility: 'Visibility',
-  })
+  });
+
+  window.onload = function() {
+    anime({
+      targets: '#animatedBox',
+      translateY: [-5, 5],
+      duration: 2000,
+      easing: 'easeInOutSine',
+      direction: 'alternate',
+      loop: true
+    });
+  };
 
 </script>
 
@@ -18,7 +30,7 @@
         <MapPin 
           :size="25"
         />
-        <p>Toronto, ON</p>
+        <h2>Toronto, ON</h2>
       </div>
       
       <div class="weather-today">
@@ -36,7 +48,7 @@
           </div>
         </div>
 
-        <div class="temp-image">
+        <div id="animatedBox" class="temp-image">
           <img src="../assets/images/cloud-icon.jpg" alt="Cloud" />
         </div>
       </div>
@@ -62,9 +74,13 @@
   .weather-container {
     display: flex;
     flex-direction: column;
-    background: var(--secondary-color);
+    background: linear-gradient(
+      to bottom right, 
+      var(--secondary-color), 
+      hsla(from var(--secondary-color) h s calc(l + 20) / 0.3)
+    );
     border-radius: 15px;
-    width: 500px;
+    width: 550px;
     justify-content: center;
   }
 
@@ -77,7 +93,7 @@
     padding: var(--spacing-xl);
   }
 
-  .weather-location p {
+  .weather-location h2 {
     font-size: var(--text-xl);
     font-weight: 500;
   }
