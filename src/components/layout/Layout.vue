@@ -4,7 +4,8 @@
 <template>
   <body>
     <header>
-      <h1>Weather App</h1>
+      <h1>Weather</h1>
+      <p>Saturday, August 2</p>
     </header>
     <main>
       <slot />
@@ -27,7 +28,13 @@
   }
 
   header h1 {
-    font-size: var(--text-2xl);
+    font-size: var(--text-4xl);
     color: var(--text-color);
+    font-weight: 100;
+  }
+
+  header p {
+    color: hsl(from var(--text-color) h s calc(l - 15));
+    font-size: var(--text-xl);
   }
 </style>
