@@ -26,7 +26,8 @@
     align-items: center;
   }
 
-  header > h1 {
+  header h1 {
     font-size: var(--text-2xl);
+    color: var(--text-color);
   }
 </style>
