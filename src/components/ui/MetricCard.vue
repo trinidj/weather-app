@@ -21,6 +21,7 @@
   .metric-container {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-xs);
     align-items: center;
     color: hsl(from var(--text-color) h s l / 0.5);
   }
