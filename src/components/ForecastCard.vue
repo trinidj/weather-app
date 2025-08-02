@@ -14,6 +14,10 @@
 
       <div class="hourly-forecast">
         <HourlyForecastCard />
+        <HourlyForecastCard />
+        <HourlyForecastCard />
+        <HourlyForecastCard />
+        <HourlyForecastCard />
       </div>
     </div>
   </section>
@@ -25,7 +29,7 @@
     flex-direction: column;
     background: white;
     border-radius: 15px;
-    width: 550px;
+    width: 600px;
   }
 
   .forecast-header {
@@ -38,5 +42,14 @@
 
   .forecast-header h3 {
     font-weight: 500;
+  }
+
+  .hourly-forecast {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-base);
+    justify-content: space-between;
+    padding: var(--spacing-xl);
+    padding-top: 0;
   }
 </style>
