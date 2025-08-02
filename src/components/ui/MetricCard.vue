@@ -23,7 +23,7 @@
     flex-direction: column;
     gap: var(--spacing-xs);
     align-items: center;
-    color: hsl(from var(--text-color) h s l / 0.5);
+    color: hsl(from var(--text-color) h s calc(l - 5));
   }
 
   .metric-value {
