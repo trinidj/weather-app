@@ -13,11 +13,11 @@
   window.onload = function() {
     anime({
       targets: '#animatedBox',
-      translateY: [-5, 5],
+      translateY: [-10, 10],
       duration: 2000,
       easing: 'easeInOutSine',
       direction: 'alternate',
-      loop: true
+      loop: true,
     });
   };
 
@@ -80,7 +80,7 @@
       hsla(from var(--secondary-color) h s calc(l + 20) / 0.3)
     );
     border-radius: 15px;
-    width: 550px;
+    width: 600px;
     justify-content: center;
   }
 
@@ -106,9 +106,14 @@
     padding-inline: var(--spacing-xl);
   }
 
+  .temp-details {
+    display: flex;
+    flex-direction: column;
+  }
+
   .current-temp p {
     color: var(--text-color);
-    font-size: var(--text-6xl);
+    font-size: var(--text-8xl);
     font-weight: 200;
   }
 
@@ -125,6 +130,7 @@
   .temp-image img {
     border-radius: 20%;
     width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .weather-metrics {
