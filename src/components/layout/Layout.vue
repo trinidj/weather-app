@@ -1,11 +1,14 @@
 <script setup>
+  import { getDate } from '@/utils/getDate.js';
+
+  const todaysDate = getDate();
 </script>
 
 <template>
   <body>
     <header>
       <h1>Weather</h1>
-      <p>Saturday, August 2</p>
+      <p>{{ todaysDate }}</p>
     </header>
     <main>
       <slot />
