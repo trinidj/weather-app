@@ -1,13 +1,15 @@
 import axios from "axios"
 
-export const getWeatherData = async () => {
-  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=London&appid={API key}`
+const apiKey = import.meta.env.VITE_WEATHER_API_KEY
+const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Toronto&aqi=no`
 
+export const getWeatherData = async () => {
   try {
     const response = await axios.get(apiUrl);
 
-    console.log('Weather Data:', response.data);
+    return response.data;
   } catch (error) {
     console.error('Failed to fetch weather data:', error);
+    return null;
   }
 }
