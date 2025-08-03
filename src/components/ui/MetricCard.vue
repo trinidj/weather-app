@@ -12,8 +12,8 @@
 <template>
   <div class="metric-container">
     <slot />
-    <p class="metric-title">{{ metric }}</p>
-    <p class="metric-value">{{ value }}</p>
+    <p class="metric-title">{{ props.metric }}</p>
+    <p class="metric-value">{{ props.value }}</p>
   </div>
 </template>
 
