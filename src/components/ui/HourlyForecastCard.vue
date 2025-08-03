@@ -1,10 +1,18 @@
 <script setup>
+  const props = defineProps({
+    time: {
+      type: String,
+    },
+    temp: {
+      type: String,
+    },
+  });
 </script>
 
 <template>
   <div class="weather-card">
     <div class="time">
-      <p>12:00</p>
+      <p>{{ props.time }}</p>
     </div>
 
     <div class="weather-image">
@@ -12,7 +20,7 @@
     </div>
 
     <div class="temp">
-      <p>22°</p>
+      <p>{{ props.temp }}</p>
     </div>
   </div>
 </template>
