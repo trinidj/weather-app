@@ -28,6 +28,7 @@
   onMounted(async () => {
     const data = await getWeatherData();
     currentWeatherData.value = data;
+    console.log(data);
 
     anime({
       targets: '#animatedBox',
@@ -48,7 +49,7 @@
         <MapPin 
           :size="25"
         />
-        <h2>Toronto, ON</h2>
+        <h2>{{ currentWeatherData?.location?.name + ', ' + currentWeatherData?.location?.region }}</h2>
       </div>
       
       <div class="weather-today">
@@ -67,7 +68,7 @@
         </div>
 
         <div id="animatedBox" class="temp-image">
-          <img src="../assets/images/cloud-icon.jpg" alt="Cloud" />
+          <img :src="currentWeatherData?.current?.condition?.icon" alt="Cloud" />
         </div>
       </div>
 
