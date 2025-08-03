@@ -1,9 +1,17 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, computed } from 'vue';
   import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
   import { getWeatherData } from '@/utils/api/getWeatherData';
+
+  const currentWeatherData = ref(null);
+
+  const weatherData = computed(() => ({
+    temp: currentWeatherData.value?.current?.temp_c,
+    desc: currentWeatherData.value?.current?.condition?.text,
+    feelsLike: currentWeatherData.value?.current?.feelslike_c,
+  }));
 
   const metrics = ref({
     humidity: 'Humidity', 
@@ -11,13 +19,11 @@
     visibility: 'Visibility',
   });
 
-  const currentWeatherData = ref(null);
-
-  const metricValues = ref({
-    humidity: currentWeatherData?.current?.temp_c,
-    wind: currentWeatherData?.current?.condition?.text,
-    visibility: currentWeatherData?.current?.feelslike_c,
-  });
+  const metricValues = computed(() => ({
+    humidity: currentWeatherData.value?.current?.humidity,
+    wind: currentWeatherData.value?.current?.wind_kph,
+    visibility: currentWeatherData.value?.current?.vis_km,
+  }));
 
   onMounted(async () => {
     const data = await getWeatherData();
@@ -48,15 +54,15 @@
       <div class="weather-today">
         <div class="temp-details">
           <div class="current-temp">
-            <p>{{ currentWeatherData?.current?.temp_c }}°</p>
+            <p>{{ weatherData.temp }}°</p>
           </div>
 
           <div class="temp-description">
-            <p>{{ currentWeatherData?.current?.condition?.text }}</p>
+            <p>{{ weatherData.desc }}</p>
           </div>
 
           <div class="feels-like-temp">
-            <p>Feels like {{ currentWeatherData?.current?.feelslike_c }}</p>
+            <p>Feels like {{ weatherData.feelsLike }}</p>
           </div>
         </div>
 
