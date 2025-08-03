@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY
-const apiUrl = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Toronto&aqi=no`
+const apiUrl = `https://api.tomorrow.io/v4/weather/realtime?location=toronto&apikey=${apiKey}`
 
 export const getWeatherData = async () => {
   try {
