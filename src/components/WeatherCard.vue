@@ -3,9 +3,10 @@
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
   import { ref } from 'vue';
   import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
+  import { getWeatherData } from '@/utils/api/getWeatherData';
 
   const metrics = ref({
-    humidity: 'Humidity',
+    humidity: 'Humidity', 
     wind: 'Wind',
     visibility: 'Visibility',
   });
@@ -20,6 +21,8 @@
       loop: true,
     });
   };
+
+  const current = getWeatherData();
 
 </script>
 
@@ -36,7 +39,7 @@
       <div class="weather-today">
         <div class="temp-details">
           <div class="current-temp">
-            <p>22°</p>
+            <p>{{ current }}</p>
           </div>
 
           <div class="temp-description">
