@@ -1,29 +1,40 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
-  import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
+  import { MapPin, Droplets, Droplet, Wind, Eye,  } from 'lucide-vue-next';
   import { onMounted, ref, computed } from 'vue';
   import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
   import { getWeatherData } from '@/utils/api/getWeatherData';
+  import weatherCodes from '@/utils/weatherCodes.json';
 
   const currentWeatherData = ref(null);
 
   const weatherData = computed(() => ({
-    temp: currentWeatherData.value?.current?.temp_c,
-    desc: currentWeatherData.value?.current?.condition?.text,
-    feelsLike: currentWeatherData.value?.current?.feelslike_c,
+    temp: currentWeatherData.value?.data?.values?.temperature || '--',
+    desc: weatherCodes.weatherCode[currentWeatherData.value?.data?.values?.weatherCode] || 'Unknown',
+    feelsLike: currentWeatherData.value?.data?.values?.temperatureApparent || '--',
   }));
 
   const metrics = ref({
     humidity: 'Humidity', 
     wind: 'Wind',
     visibility: 'Visibility',
+    precipitation: 'Percipitation',
+    uvIndex: 'UV Index'
   });
 
   const metricValues = computed(() => ({
-    humidity: currentWeatherData.value?.current?.humidity,
-    wind: currentWeatherData.value?.current?.wind_kph,
-    visibility: currentWeatherData.value?.current?.vis_km,
+    humidity: currentWeatherData.value?.data?.values?.humidity || '--',
+    wind: currentWeatherData.value?.data?.values?.windSpeed || '--',
+    visibility: currentWeatherData.value?.data?.values?.visibility || '--',
+    precipitation: currentWeatherData.value?.data?.values?.precipitationIntensity || '--',
+    uvIndex: currentWeatherData.value?.data?.values?.uvIndex || '--',
   }));
+
+  const cityName = computed(() => {
+    const fullLocation = currentWeatherData.value?.location?.name;
+
+    return fullLocation ? fullLocation.split(',')[0].trim() : 'Loading...';
+  })
 
   onMounted(async () => {
     const data = await getWeatherData();
@@ -49,7 +60,7 @@
         <MapPin 
           :size="25"
         />
-        <h2>{{ currentWeatherData?.location?.name + ', ' + currentWeatherData?.location?.region }}</h2>
+        <h2>{{ cityName }}</h2>
       </div>
       
       <div class="weather-today">
@@ -68,7 +79,7 @@
         </div>
 
         <div id="animatedBox" class="temp-image">
-          <img :src="currentWeatherData?.current?.condition?.icon" alt="Cloud" />
+          <img src="" alt="Cloud" />
         </div>
       </div>
 
@@ -83,6 +94,14 @@
         
         <MetricCard :metric="metrics.visibility" :value="`${metricValues.visibility} km`">
           <Eye />
+        </MetricCard>
+
+        <MetricCard :metric="metrics.precipitation" :value="`${metricValues.precipitation} mm`">
+          <Droplet />
+        </MetricCard>
+
+        <MetricCard :metric="metrics.uvIndex" :value="metricValues.uvIndex">
+          <Droplet />
         </MetricCard>
       </div>
     </div>
@@ -99,7 +118,6 @@
       hsla(from var(--secondary-color) h s calc(l + 20) / 0.3)
     );
     border-radius: 15px;
-    width: 600px;
     justify-content: center;
   }
 
@@ -121,6 +139,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: var(--spacing-5xl);
     justify-content: space-between;
     padding-inline: var(--spacing-xl);
   }
