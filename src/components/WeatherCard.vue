@@ -1,7 +1,7 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
   import { getWeatherData } from '@/utils/api/getWeatherData';
 
@@ -11,7 +11,18 @@
     visibility: 'Visibility',
   });
 
-  window.onload = function() {
+  const currentWeatherData = ref(null);
+
+  const metricValues = ref({
+    humidity: currentWeatherData?.current?.temp_c,
+    wind: currentWeatherData?.current?.condition?.text,
+    visibility: currentWeatherData?.current?.feelslike_c,
+  });
+
+  onMounted(async () => {
+    const data = await getWeatherData();
+    currentWeatherData.value = data;
+
     anime({
       targets: '#animatedBox',
       translateY: [-10, 10],
@@ -20,9 +31,7 @@
       direction: 'alternate',
       loop: true,
     });
-  };
-
-  const current = getWeatherData();
+  });
 
 </script>
 
@@ -39,15 +48,15 @@
       <div class="weather-today">
         <div class="temp-details">
           <div class="current-temp">
-            <p>{{ current }}</p>
+            <p>{{ currentWeatherData?.current?.temp_c }}°</p>
           </div>
 
           <div class="temp-description">
-            <p>Partly Cloudy</p>
+            <p>{{ currentWeatherData?.current?.condition?.text }}</p>
           </div>
 
           <div class="feels-like-temp">
-            <p>Feels like 24°</p>
+            <p>Feels like {{ currentWeatherData?.current?.feelslike_c }}</p>
           </div>
         </div>
 
@@ -57,15 +66,15 @@
       </div>
 
       <div class="weather-metrics">
-        <MetricCard :metric="metrics.humidity" :value="65">
+        <MetricCard :metric="metrics.humidity" :value="metricValues.humidity">
           <Droplets />
         </MetricCard>
 
-        <MetricCard :metric="metrics.wind" :value="'12 km/h'">
+        <MetricCard :metric="metrics.wind" :value="`${metricValues.wind} km`">
           <Wind />
         </MetricCard>
         
-        <MetricCard :metric="metrics.visibility" :value="'10 km'">
+        <MetricCard :metric="metrics.visibility" :value="`${metricValues.visibility} km`">
           <Eye />
         </MetricCard>
       </div>
