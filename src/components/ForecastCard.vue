@@ -1,7 +1,29 @@
 <script setup>
   import { Clock } from 'lucide-vue-next';
   import HourlyForecastCard from '@/components/ui/HourlyForecastCard.vue';
+  import { getForecastData } from '@/utils/api/getForecastData.js';
+  import { ref, onMounted, computed } from 'vue';
 
+  const currentForecastData = ref(null);
+
+  const hourlyForecasts = computed(() => {
+    if (!currentForecastData.value?.timelines?.hourly) return [];
+    
+    return currentForecastData.value.timelines.hourly.slice(0, 5).map(hour => ({
+      time: new Date(hour.time).toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: false
+      }),
+      temp: hour.values?.temperature,
+    }));
+  })
+
+  onMounted(async () => {
+    const data = await getForecastData();
+    currentForecastData.value = data;
+    console.log(data);
+  });
 </script>
 
 <template>
@@ -13,9 +35,12 @@
       </div>
 
       <div class="hourly-forecast">
-        <HourlyForecastCard />
-        <HourlyForecastCard />
-        <HourlyForecastCard />
+        <HourlyForecastCard 
+          v-for="(forecast, index) in hourlyForecasts" 
+          :key="index"
+          :time="forecast.time" 
+          :temp="forecast.temp"
+        />
       </div>
     </div>
   </section>
@@ -37,7 +62,7 @@
     color: var(--secondary-dark);
   }
 
-  .forecast-header h3 {
+  .forecast-header h2 {
     font-weight: 500;
   }
 
