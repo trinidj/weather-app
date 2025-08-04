@@ -39,7 +39,15 @@
     console.log(data);
 
     breathing('#animatedBox');
-    slideIn('#weather-container');
+
+    const slideInSettings = {
+      targets: '#weather-container', 
+      translate: [80, 0],
+      opacity: [0, 1],
+      duration: 700,
+      easing: 'easeOutQuad'
+    };
+    slideIn(slideInSettings);
   });
 
 </script>
