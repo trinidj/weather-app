@@ -3,6 +3,7 @@
   import HourlyForecastCard from '@/components/ui/HourlyForecastCard.vue';
   import { getForecastData } from '@/utils/api/getForecastData.js';
   import { ref, onMounted, computed } from 'vue';
+  import { slideIn } from '@/components/animations/slideIn';
 
   const currentForecastData = ref(null);
 
@@ -23,12 +24,14 @@
     const data = await getForecastData();
     currentForecastData.value = data;
     console.log(data);
+
+    slideIn('#forecast-container');
   });
 </script>
 
 <template>
   <section id="forecast-section">
-    <div class="forecast-container">
+    <div id="forecast-container" class="forecast-container">
       <div class="forecast-header">
         <Clock />
         <h2>Hourly Forecast</h2>
@@ -50,7 +53,7 @@
   .forecast-container {
     display: flex;
     flex-direction: column;
-    background: white;
+    background: hsl(from rgb(255, 255, 255) h s l / 0.5);
     border-radius: 15px;
   }
 
