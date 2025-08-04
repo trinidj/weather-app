@@ -1,10 +1,11 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
-  import { MapPin, Droplets, Droplet, Wind, Eye,  } from 'lucide-vue-next';
+  import { MapPin, Droplets, Droplet, Wind, Eye } from 'lucide-vue-next';
   import { onMounted, ref, computed } from 'vue';
-  import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
   import { getWeatherData } from '@/utils/api/getWeatherData';
   import weatherCodes from '@/utils/weatherCodes.json';
+  import { slideIn } from '@/components/animations/slideIn';
+  import { breathing } from '@/components/animations/breathing';
 
   const currentWeatherData = ref(null);
 
@@ -18,44 +19,34 @@
     humidity: 'Humidity', 
     wind: 'Wind',
     visibility: 'Visibility',
-    precipitation: 'Percipitation',
-    uvIndex: 'UV Index'
   });
 
   const metricValues = computed(() => ({
     humidity: currentWeatherData.value?.data?.values?.humidity || '--',
     wind: currentWeatherData.value?.data?.values?.windSpeed || '--',
     visibility: currentWeatherData.value?.data?.values?.visibility || '--',
-    precipitation: currentWeatherData.value?.data?.values?.precipitationIntensity || '--',
-    uvIndex: currentWeatherData.value?.data?.values?.uvIndex || '--',
   }));
 
   const cityName = computed(() => {
     const fullLocation = currentWeatherData.value?.location?.name;
 
     return fullLocation ? fullLocation.split(',')[0].trim() : 'Loading...';
-  })
+  });
 
   onMounted(async () => {
     const data = await getWeatherData();
     currentWeatherData.value = data;
     console.log(data);
 
-    anime({
-      targets: '#animatedBox',
-      translateY: [-10, 10],
-      duration: 2000,
-      easing: 'easeInOutSine',
-      direction: 'alternate',
-      loop: true,
-    });
+    breathing('#animatedBox');
+    slideIn('#weather-container');
   });
 
 </script>
 
 <template>
   <section id="weather-section">
-    <div class="weather-container">
+    <div id="weather-container" class="weather-container">
       <div class="weather-location">
         <MapPin 
           :size="25"
@@ -79,7 +70,7 @@
         </div>
 
         <div id="animatedBox" class="temp-image">
-          <img src="" alt="Cloud" />
+          <img src="../assets/images/cloud-icon.jpg" alt="Cloud" />
         </div>
       </div>
 
@@ -95,14 +86,6 @@
         <MetricCard :metric="metrics.visibility" :value="`${metricValues.visibility} km`">
           <Eye />
         </MetricCard>
-
-        <MetricCard :metric="metrics.precipitation" :value="`${metricValues.precipitation} mm`">
-          <Droplet />
-        </MetricCard>
-
-        <MetricCard :metric="metrics.uvIndex" :value="metricValues.uvIndex">
-          <Droplet />
-        </MetricCard>
       </div>
     </div>
   </section>
@@ -112,13 +95,11 @@
   .weather-container {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(
-      to bottom right, 
-      var(--secondary-color), 
-      hsla(from var(--secondary-color) h s calc(l + 20) / 0.3)
-    );
+    background: hsl(from rgb(255, 255, 255) h s l / 0.1);
     border-radius: 15px;
     justify-content: center;
+    border: 2px solid hsl(from var(--secondary-light) h s l / 0.3);
+
   }
 
   .weather-location {
@@ -127,7 +108,8 @@
     align-items: center;
     gap: var(--spacing-sm);
     color: var(--text-color);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-2xl);
+    padding-bottom: 0;
   }
 
   .weather-location h2 {
@@ -139,9 +121,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--spacing-5xl);
+    gap: var(--spacing-7xl);
+    margin-block: var(--spacing-lg);
     justify-content: space-between;
-    padding-inline: var(--spacing-xl);
+    padding-inline: var(--spacing-2xl);
   }
 
   .temp-details {
@@ -152,7 +135,7 @@
   .current-temp p {
     color: var(--text-color);
     font-size: var(--text-8xl);
-    font-weight: 200;
+    font-weight: 500;
   }
 
   .temp-description p {
@@ -177,6 +160,7 @@
     gap: var(--spacing-3xl);
     justify-content: center;
     align-items: center;
-    padding: var(--spacing-xl);
+    padding: var(--spacing-2xl);
+    padding-top: 0;
   }
 </style>
