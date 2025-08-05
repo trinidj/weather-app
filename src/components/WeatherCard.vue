@@ -1,37 +1,39 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
-  import { onMounted, ref, computed } from 'vue';
-  import { getWeatherData } from '@/utils/api/getWeatherData';
+  import { onMounted, computed } from 'vue';
   import { breathing } from '@/components/animations/breathing';
 
-  const currentWeatherData = ref(null);
+  const props = defineProps({
+    weatherData: {
+      type: Object,
+      default: null
+    }
+  });
 
-  const weatherData = computed(() => ({
-    temp: currentWeatherData.value?.current?.temp_c,
-    desc: currentWeatherData.value?.current?.condition?.text,
-    feelsLike: currentWeatherData.value?.current?.feelslike_c,
+  const weatherInfo = computed(() => ({
+    temp: props.weatherData?.current?.temp_c,
+    desc: props.weatherData?.current?.condition?.text,
+    feelsLike: props.weatherData?.current?.feelslike_c,
   }));
 
-  const metrics = ref({
+  const metrics = {
     humidity: 'Humidity', 
     wind: 'Wind',
     visibility: 'Visibility',
-  });
+  };
 
   const metricValues = computed(() => ({
-    humidity: currentWeatherData.value?.current?.humidity,
-    wind: currentWeatherData.value?.current?.wind_mph,
-    visibility: currentWeatherData.value?.current?.vis_km,
+    humidity: props.weatherData?.current?.humidity,
+    wind: props.weatherData?.current?.wind_mph,
+    visibility: props.weatherData?.current?.vis_km,
   }));
 
-  const city = computed(() => currentWeatherData.value?.location?.name);
-  const region = computed(() => currentWeatherData.value?.location?.region);
-  const weatherIcon = computed(() => currentWeatherData.value?.current?.condition?.icon);
+  const region = computed(() => props.weatherData?.location?.region);
+  const city = computed(() => props.weatherData?.location?.name);
+  const weatherIcon = computed(() => props.weatherData?.current?.condition?.icon);
 
-  onMounted(async () => {
-    const data = await getWeatherData(city.value);
-    currentWeatherData.value = data;
+  onMounted(() => {
     breathing('#animatedBox');
   });
 </script>
@@ -49,15 +51,15 @@
       <div class="weather-today">
         <div class="temp-details">
           <div class="current-temp">
-            <p>{{ weatherData.temp }}°</p>
+            <p>{{ weatherInfo.temp }}°</p>
           </div>
 
           <div class="temp-description">
-            <p>{{ weatherData.desc }}</p>
+            <p>{{ weatherInfo.desc }}</p>
           </div>
 
           <div class="feels-like-temp">
-            <p>Feels like {{ weatherData.feelsLike }}</p>
+            <p>Feels like {{ weatherInfo.feelsLike }}°</p>
           </div>
         </div>
 
