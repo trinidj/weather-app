@@ -4,7 +4,7 @@
       type: String,
     },
     temp: {
-      type: String,
+      type: Number,
     },
   });
 </script>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="weather-image">
-      <img src="../../assets/images/cloud-icon.jpg" />
+      <img id="image" src="../../assets/images/cloud-icon.jpg" />
     </div>
 
     <div class="temp">
