@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
-const apiUrl = `https://api.tomorrow.io/v4/weather/forecast?location=toronto&apikey=${apiKey}`;
 
-export const getForecastData = async () => {
+export const getForecastData = async (location = 'Toronto') => {
+  const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=5&aqi=no&alerts=no`;
+
   try {
     const response = await axios.get(apiUrl);
 
