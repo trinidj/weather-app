@@ -16,7 +16,7 @@
 <style scoped>
   header {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: space-betweens;
     padding: 1rem;
