@@ -1,10 +1,24 @@
 <script setup>
   import { Search } from 'lucide-vue-next';
+  import { ref } from 'vue';
+
+  const emit = defineEmits(['search']);
+  const searchInput = ref('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (searchInput.value.trim()) {
+      emit('search', searchInput.value.trim());
+    }
+  };
 </script>
 
 <template>
-  <form class="search-container">
-    <input type="search" placeholder="Search for a city..." />
+  <form class="search-container" @submit="handleSubmit">
+    <input
+      v-model="searchInput"
+      type="search" 
+      placeholder="Search for a city..." />
     <Search 
       class="search-icon"
       :size="16"
@@ -28,6 +42,7 @@
     background: none;
     border: none;
     padding: var(--spacing-xs);
+    width: 100%;
     caret-color: rgb(255, 255, 255);
     color: rgb(255, 255, 255);
   }
