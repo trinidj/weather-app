@@ -1,21 +1,12 @@
-/**
- * @param { String } targets
- * @param { Array } translate
- * @param { Array } opacity
- * @param { Number } duration
- * @param { String } easing
- */
-
-import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
+import { animate } from "animejs";
 
 export const slideIn = (settings) => {
-  const { targets, translate, opacity, duration, easing } = settings;
+  const { targets, translate, opacity, duration, ease } = settings;
 
-  anime({
-    targets: targets,
+  animate(targets, {
     translateY: translate,
     opacity: opacity,
     duration: duration,
-    easing: easing,
+    ease: ease,
   });
 };
