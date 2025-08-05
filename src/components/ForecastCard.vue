@@ -1,27 +1,41 @@
 <script setup>
   import { Clock } from 'lucide-vue-next';
   import HourlyForecastCard from '@/components/ui/HourlyForecastCard.vue';
-  import { getForecastData } from '@/utils/api/getForecastData.js';
-  import { ref, onMounted, computed } from 'vue';
+  import { computed } from 'vue';
 
-  const currentForecastData = ref(null);
+  const props = defineProps({
+    forecastData: {
+      type: Object,
+      default: null,
+    }
+  });
 
   const hourlyForecasts = computed(() => {
-    if (!currentForecastData.value?.timelines?.hourly) return [];
+    if (!props.forecastData?.forecast?.forecastday) return [];
     
-    return currentForecastData.value.timelines.hourly.slice(0, 5).map(hour => ({
+    const now = new Date();
+    const allHours = [];
+    
+    for (const day of props.forecastData?.forecast?.forecastday) {
+      allHours.push(...day.hour);
+    }
+    
+    const currentIndex = allHours.findIndex(hour => {
+      const hourTime = new Date(hour.time);
+      return hourTime >= now;
+    });
+    
+    if (currentIndex === -1) return [];
+    
+    return allHours.slice(currentIndex, currentIndex + 5).map(hour => ({
       time: new Date(hour.time).toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: false
       }),
-      temp: hour.values?.temperature,
+      icon: hour.condition?.icon,
+      temp: Math.round(hour.temp_c),
     }));
-  })
-
-  onMounted(async () => {
-    const data = await getForecastData();
-    currentForecastData.value = data;
   });
 </script>
 
@@ -38,6 +52,7 @@
           v-for="(forecast, index) in hourlyForecasts" 
           :key="index"
           :time="forecast.time" 
+          :icon="forecast.icon"
           :temp="forecast.temp"                                 
         />
       </div>
