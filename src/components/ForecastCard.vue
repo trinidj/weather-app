@@ -3,7 +3,6 @@
   import HourlyForecastCard from '@/components/ui/HourlyForecastCard.vue';
   import { getForecastData } from '@/utils/api/getForecastData.js';
   import { ref, onMounted, computed } from 'vue';
-  import { slideIn } from '@/components/animations/slideIn';
 
   const currentForecastData = ref(null);
 
@@ -23,16 +22,6 @@
   onMounted(async () => {
     const data = await getForecastData();
     currentForecastData.value = data;
-    console.log(data);
-
-    const slideInSettings = {
-      targets: '#weather-container', 
-      translate: [80, 0],
-      opacity: [0, 1],
-      duration: 700,
-      easing: 'easeOutQuad'
-    };
-    slideIn(slideInSettings);
   });
 </script>
 
@@ -49,7 +38,7 @@
           v-for="(forecast, index) in hourlyForecasts" 
           :key="index"
           :time="forecast.time" 
-          :temp="forecast.temp"
+          :temp="forecast.temp"                                 
         />
       </div>
     </div>
