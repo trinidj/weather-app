@@ -131,7 +131,7 @@
     flex-direction: row;
     align-items: center;
     gap: var(--spacing-7xl);
-    margin-block: var(--spacing-lg);
+    margin-block: var(--spacing-3xl);
     justify-content: space-between;
     padding-inline: var(--spacing-2xl);
   }
@@ -143,7 +143,7 @@
 
   .current-temp p {
     color: var(--text-color);
-    font-size: var(--text-8xl);
+    font-size: var(--text-7xl);
     font-weight: 500;
   }
 
