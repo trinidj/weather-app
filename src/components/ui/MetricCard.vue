@@ -1,4 +1,6 @@
 <script setup>
+  import { computed } from 'vue';
+
   const props = defineProps({
     metric: {
       type: String,
@@ -7,13 +9,29 @@
       type: Number,
     },
   });
+
+  const formattedValue = computed(() => {
+    if (props.value === null) {
+      return '--';
+    }
+
+    switch (props.metric) {
+      case 'Wind':
+      case 'Visibility':
+        return `${props.value} km`;
+      case 'Humidity':
+        return `${props.value} %`;
+      default:
+        return props.value;
+    }
+  })
 </script>
 
 <template>
   <div class="metric-container">
     <slot />
-    <p class="metric-title">{{ props.metric }}</p>
-    <p class="metric-value">{{ props.value }}</p>
+    
+    <span class="metric-value">{{ formattedValue }}</span>
   </div>
 </template>
 
