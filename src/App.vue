@@ -6,20 +6,29 @@
   import { onMounted, ref } from 'vue';
   import { slideIn } from '@/components/animations/slideIn';
   import { getWeatherData } from '@/utils/api/getWeatherData';
+  import { getForecastData } from '@/utils/api/getForecastData';
 
   const currentWeatherData = ref(null);
+  const currentForecastData = ref(null);
 
   const fetchWeatherForCity = async (city = 'Toronto') => {
     const data = await getWeatherData(city);
     currentWeatherData.value = data;
   };
 
+  const fetchForecastForCity = async (city = 'Toronto') => {
+    const data = await getForecastData(city);
+    currentForecastData.value = data;
+  }
+
   const handleSearch = async (city) => {
     await fetchWeatherForCity(city);
+    await fetchForecastForCity(city);
   };
 
   onMounted(async () => {
     await fetchWeatherForCity();
+    await fetchForecastForCity();
 
     slideIn({
       targets: ['#weather-section', '#forecast-section', '#search-bar'],
@@ -43,6 +52,7 @@
     />
     <ForecastCard 
       id="forecast-section"
+      :forecast-data="currentForecastData"
     />
   </Layout>
 </template>
