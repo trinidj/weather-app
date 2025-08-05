@@ -55,4 +55,13 @@
   .search-icon {
     color: hsl(from rgb(255, 255, 255) h s calc(l + 10) / 0.5);
   }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="search"]::-ms-clear {
+    display: none;
+  }
 </style>
