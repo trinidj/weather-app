@@ -1,0 +1,43 @@
+<script setup>
+  import { Search } from 'lucide-vue-next';
+</script>
+
+<template>
+  <form class="search-container">
+    <input type="search" placeholder="Search for a city..." />
+    <Search 
+      class="search-icon"
+      :size="16"
+    />
+  </form>
+</template>
+
+<style scoped>
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: hsl(from rgb(255, 255, 255) h s l / 0.1);
+    border: 2px solid hsl(from rgb(255, 255, 255) h s calc(l + 20) / 0.3);
+    width: 100%;
+    border-radius: 15px;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  input[type="search"] {
+    background: none;
+    border: none;
+    padding: var(--spacing-xs);
+    caret-color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+  }
+
+  input[type="search"]:focus {
+    outline: none;
+  }
+
+  input[type="search"]::placeholder,
+  .search-icon {
+    color: hsl(from rgb(255, 255, 255) h s calc(l + 10) / 0.5);
+  }
+</style>
