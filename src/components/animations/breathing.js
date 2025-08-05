@@ -1,12 +1,11 @@
-import anime from 'https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js';
+import { animate } from 'animejs';
 
-export const breathing = (targets) => {
-   anime({
-    targets: targets,
-    translateY: [-10, 10],
-    duration: 2000,
-    easing: 'easeInOutSine',
-    direction: 'alternate',
+export const breathing = (target) => {
+  animate(target, {
+    translateY: 10,
+    duration: 1500,
+    ease: 'inOutQuad',
+    alternate: true,
     loop: true,
   });
 };

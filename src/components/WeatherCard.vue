@@ -1,18 +1,17 @@
 <script setup>
   import MetricCard from '@/components/ui/MetricCard.vue';
-  import { MapPin, Droplets, Droplet, Wind, Eye } from 'lucide-vue-next';
+  import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
   import { onMounted, ref, computed } from 'vue';
   import { getWeatherData } from '@/utils/api/getWeatherData';
   import weatherCodes from '@/utils/weatherCodes.json';
-  import { slideIn } from '@/components/animations/slideIn';
   import { breathing } from '@/components/animations/breathing';
 
   const currentWeatherData = ref(null);
 
   const weatherData = computed(() => ({
-    temp: currentWeatherData.value?.data?.values?.temperature || '--',
-    desc: weatherCodes.weatherCode[currentWeatherData.value?.data?.values?.weatherCode] || 'Unknown',
-    feelsLike: currentWeatherData.value?.data?.values?.temperatureApparent || '--',
+    temp: currentWeatherData.value?.data?.values?.temperature,
+    desc: weatherCodes.weatherCode[currentWeatherData.value?.data?.values?.weatherCode],
+    feelsLike: currentWeatherData.value?.data?.values?.temperatureApparent,
   }));
 
   const metrics = ref({
@@ -22,9 +21,9 @@
   });
 
   const metricValues = computed(() => ({
-    humidity: currentWeatherData.value?.data?.values?.humidity || '--',
-    wind: currentWeatherData.value?.data?.values?.windSpeed || '--',
-    visibility: currentWeatherData.value?.data?.values?.visibility || '--',
+    humidity: currentWeatherData.value?.data?.values?.humidity,
+    wind: currentWeatherData.value?.data?.values?.windSpeed,
+    visibility: currentWeatherData.value?.data?.values?.visibility,
   }));
 
   const cityName = computed(() => {
@@ -36,18 +35,7 @@
   onMounted(async () => {
     const data = await getWeatherData();
     currentWeatherData.value = data;
-    console.log(data);
-
     breathing('#animatedBox');
-
-    const slideInSettings = {
-      targets: '#weather-container', 
-      translate: [80, 0],
-      opacity: [0, 1],
-      duration: 700,
-      easing: 'easeOutQuad'
-    };
-    slideIn(slideInSettings);
   });
 
 </script>
@@ -87,11 +75,11 @@
           <Droplets />
         </MetricCard>
 
-        <MetricCard :metric="metrics.wind" :value="`${metricValues.wind} km`">
+        <MetricCard :metric="metrics.wind" :value="metricValues.wind">
           <Wind />
         </MetricCard>
         
-        <MetricCard :metric="metrics.visibility" :value="`${metricValues.visibility} km`">
+        <MetricCard :metric="metrics.visibility" :value="metricValues.visibility">
           <Eye />
         </MetricCard>
       </div>
