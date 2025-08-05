@@ -7,7 +7,6 @@
   import { breathing } from '@/components/animations/breathing';
   import SearchBar from '@/components/ui/SearchBar.vue';
 
-
   const currentWeatherData = ref(null);
 
   const weatherData = computed(() => ({
@@ -34,9 +33,17 @@
     return fullLocation ? fullLocation.split(',')[0].trim() : 'Loading...';
   });
 
-  onMounted(async () => {
-    const data = await getWeatherData();
+  const fetchWeatherForCity = async (city = 'toronto') => {
+    const data = await getWeatherData(city);
     currentWeatherData.value = data;
+  };
+
+  const handleSearch = async (city) => {
+    await fetchWeatherForCity(city);
+  };
+
+  onMounted(async () => {
+    await fetchWeatherForCity();
     breathing('#animatedBox');
   });
 
@@ -45,9 +52,10 @@
 <template>
   <section id="weather-section">
     <div class="search-bar">
-      <SearchBar />
+      <SearchBar 
+        @search="handleSearch"
+      />
     </div>
-
 
     <div id="weather-container" class="weather-container">
       <div class="weather-location">
