@@ -5,6 +5,8 @@
   import { getWeatherData } from '@/utils/api/getWeatherData';
   import weatherCodes from '@/utils/weatherCodes.json';
   import { breathing } from '@/components/animations/breathing';
+  import SearchBar from '@/components/ui/SearchBar.vue';
+
 
   const currentWeatherData = ref(null);
 
@@ -42,6 +44,11 @@
 
 <template>
   <section id="weather-section">
+    <div class="search-bar">
+      <SearchBar />
+    </div>
+
+
     <div id="weather-container" class="weather-container">
       <div class="weather-location">
         <MapPin 
@@ -88,6 +95,12 @@
 </template>
 
 <style scoped>
+  #weather-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
   .weather-container {
     display: flex;
     flex-direction: column;
