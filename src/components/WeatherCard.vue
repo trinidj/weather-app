@@ -3,16 +3,14 @@
   import { MapPin, Droplets, Wind, Eye } from 'lucide-vue-next';
   import { onMounted, ref, computed } from 'vue';
   import { getWeatherData } from '@/utils/api/getWeatherData';
-  import weatherCodes from '@/utils/weatherCodes.json';
   import { breathing } from '@/components/animations/breathing';
-  import SearchBar from '@/components/ui/SearchBar.vue';
 
   const currentWeatherData = ref(null);
 
   const weatherData = computed(() => ({
-    temp: currentWeatherData.value?.data?.values?.temperature,
-    desc: weatherCodes.weatherCode[currentWeatherData.value?.data?.values?.weatherCode],
-    feelsLike: currentWeatherData.value?.data?.values?.temperatureApparent,
+    temp: currentWeatherData.value?.current?.temp_c,
+    desc: currentWeatherData.value?.current?.condition?.text,
+    feelsLike: currentWeatherData.value?.current?.feelslike_c,
   }));
 
   const metrics = ref({
@@ -22,47 +20,30 @@
   });
 
   const metricValues = computed(() => ({
-    humidity: currentWeatherData.value?.data?.values?.humidity,
-    wind: currentWeatherData.value?.data?.values?.windSpeed,
-    visibility: currentWeatherData.value?.data?.values?.visibility,
+    humidity: currentWeatherData.value?.current?.humidity,
+    wind: currentWeatherData.value?.current?.wind_mph,
+    visibility: currentWeatherData.value?.current?.vis_km,
   }));
 
-  const cityName = computed(() => {
-    const fullLocation = currentWeatherData.value?.location?.name;
-
-    return fullLocation ? fullLocation.split(',')[0].trim() : 'Loading...';
-  });
-
-  const fetchWeatherForCity = async (city = 'toronto') => {
-    const data = await getWeatherData(city);
-    currentWeatherData.value = data;
-  };
-
-  const handleSearch = async (city) => {
-    await fetchWeatherForCity(city);
-  };
+  const city = computed(() => currentWeatherData.value?.location?.name);
+  const region = computed(() => currentWeatherData.value?.location?.region);
+  const weatherIcon = computed(() => currentWeatherData.value?.current?.condition?.icon);
 
   onMounted(async () => {
-    await fetchWeatherForCity();
+    const data = await getWeatherData(city.value);
+    currentWeatherData.value = data;
     breathing('#animatedBox');
   });
-
 </script>
 
 <template>
   <section id="weather-section">
-    <div class="search-bar">
-      <SearchBar 
-        @search="handleSearch"
-      />
-    </div>
-
     <div id="weather-container" class="weather-container">
       <div class="weather-location">
         <MapPin 
           :size="25"
         />
-        <h2>{{ cityName }}</h2>
+        <h2>{{ city + ', ' + region }}</h2>
       </div>
       
       <div class="weather-today">
@@ -81,7 +62,7 @@
         </div>
 
         <div id="animatedBox" class="temp-image">
-          <img src="../assets/images/cloud-icon.jpg" alt="Cloud" />
+          <img :src="weatherIcon" alt="Cloud" width="150" height="150"/>
         </div>
       </div>
 
@@ -167,7 +148,6 @@
 
   .temp-image img {
     border-radius: 20%;
-    width: 150px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
