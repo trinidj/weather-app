@@ -3,6 +3,9 @@
     time: {
       type: String,
     },
+    icon: {
+      type: String,
+    },
     temp: {
       type: Number,
     },
@@ -16,7 +19,7 @@
     </div>
 
     <div class="weather-image">
-      <img id="image" src="../../assets/images/cloud-icon.jpg" />
+      <img :src="props.icon" />
     </div>
 
     <div class="temp">
