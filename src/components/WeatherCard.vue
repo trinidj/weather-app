@@ -99,7 +99,7 @@
     border-radius: 15px;
     justify-content: center;
     border: 2px solid hsl(from var(--secondary-light) h s l / 0.3);
-
+    margin-bottom: var(--spacing-xl);
   }
 
   .weather-location {
